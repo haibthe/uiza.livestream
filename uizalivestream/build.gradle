@@ -3,11 +3,10 @@ group = 'com.github.tplloi'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.3'
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 21
+        minSdkVersion 16
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0.0"
 
@@ -35,7 +34,8 @@ android {
 }
 
 dependencies {
-    api project(':uizabase')
+//    api project(':uizabase')
+    api 'com.github.haibthe:uiza.base:1.0.2'
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.0'
 
