@@ -98,6 +98,7 @@ public class UZLivestream extends RelativeLayout
     private boolean isShowDialogCheck;
     private RtmpCameraHelper cameraHelper;
     private boolean isSavedToDevice;
+    private boolean isFrontCamera = true;
 
     public void setCameraCallback(CameraCallback cameraCallback) {
         if (cameraHelper != null) {
@@ -153,7 +154,7 @@ public class UZLivestream extends RelativeLayout
         return presetLiveStreamingFeed;
     }
 
-    private void onCreate() {
+    public void onCreate() {
         inflate(getContext(), R.layout.layout_uz_livestream, this);
         tvLiveStatus = findViewById(R.id.tv_live_status);
         progressBar = findViewById(R.id.pb);
@@ -290,7 +291,7 @@ public class UZLivestream extends RelativeLayout
         }
         int screenWidth = LScreenUtil.getScreenWidth();
         openGlView.getLayoutParams().width = screenWidth;
-        openGlView.getLayoutParams().height = width * screenWidth / height;
+        openGlView.getLayoutParams().height = LScreenUtil.getScreenHeightIncludeNavigationBar(getContext());
         openGlView.requestLayout();
     }
 
@@ -313,7 +314,7 @@ public class UZLivestream extends RelativeLayout
         if (uzLivestreamCallback != null) {
             uzLivestreamCallback.onConnectionSuccessRtmp();
         }
-        switchCamera();
+      //  switchCamera();
     }
 
     @Override
@@ -379,7 +380,13 @@ public class UZLivestream extends RelativeLayout
             uzLivestreamCallback.surfaceChanged(new StartPreview() {
                 @Override
                 public void onSizeStartPreview(int width, int height) {
-                    cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
+
+                    if(isFrontCamera){
+                        cameraHelper.startPreview(CameraHelper.Facing.FRONT, width, height);
+                    }else {
+                        cameraHelper.startPreview(CameraHelper.Facing.BACK, width, height);
+                    }
+
                     updateUISurfaceView(width, height);
                 }
             });
@@ -478,12 +485,12 @@ public class UZLivestream extends RelativeLayout
         return cameraHelper.prepareVideo(getContext(), presetLiveStreamingFeed, isLandscape);
     }
 
-    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int rotation) {
+    public boolean prepareVideo(int width, int height, int fps, int bitrate, boolean hardwareRotation, int iFrameInterval, int rotation) {
         if (presetLiveStreamingFeed == null) {
             Log.e(TAG, "prepareVideoFullHD false with presetLiveStreamingFeed null");
             return false;
         }
-        return cameraHelper.prepareVideo(width, height, fps, bitrate, hardwareRotation, rotation);
+        return cameraHelper.prepareVideo(width, height, fps, bitrate, hardwareRotation, iFrameInterval, rotation);
     }
 
     private void startRecord() {
@@ -565,7 +572,6 @@ public class UZLivestream extends RelativeLayout
     // Chi can goi start live thoi, khong can quan tam den ket qua cua api nay start success hay ko
     // Van tiep tuc goi detail entity de lay streamUrl
     private void startLivestream(final String entityLiveId) {
-        Log.d("UIZA===", "entityLiveId==" + entityLiveId);
         LDialogUtil.show(progressBar);
         UZService service = UZRestClient.createService(UZService.class);
         BodyStartALiveFeed bodyStartALiveFeed = new BodyStartALiveFeed();
@@ -676,6 +682,7 @@ public class UZLivestream extends RelativeLayout
 
     public void switchCamera() {
         cameraHelper.switchCamera();
+        isFrontCamera = !isFrontCamera;
     }
 
     public boolean isAAEnabled() {
