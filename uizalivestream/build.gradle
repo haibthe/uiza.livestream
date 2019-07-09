@@ -35,9 +35,11 @@ android {
 
 dependencies {
 //    api project(':uizabase')
-    api 'com.github.haibthe:uiza.base:1.0.4'
+//    api 'com.github.haibthe:uiza.base:1.0.4'
+    implementation 'com.github.haibthe:uiza.base:1.0.7'
+
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
-    api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.0'
+    implementation 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.0'
 
     // if you want to modify the version of these dependencies, check this link below
     // https://github.com/powermock/powermock/wiki/Mockito
