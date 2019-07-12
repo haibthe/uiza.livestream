@@ -35,7 +35,7 @@ android {
 
 dependencies {
 //    api project(':uizabase')
-    api 'com.github.haibthe:uiza.base:1.0.4'
+    api 'com.github.haibthe:uiza.base:1.0.6'
     //https://github.com/pedroSG94/rtmp-rtsp-stream-client-java
     api 'com.github.pedroSG94.rtmp-rtsp-stream-client-java:rtplibrary:1.5.0'
 
